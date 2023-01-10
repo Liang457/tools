@@ -6,7 +6,7 @@ import logging
 
 bvid = input('输入稿件BV号(链接也可以): ')
 
-if (bvid[:31].lower() == 'https://www.bilibili.com/video/' and bvid[:31] != '') or (bvid[:15].lower() == 'https://b23.tv/' and bvid[15:] != ''):
+if (bvid[:31].lower() == 'https://www.bilibili.com/video/' and bvid[:31]) or (bvid[:15].lower() == 'https://b23.tv/' and bvid[15:]):
     for j in bvid.split('?'):
         for i in j.split('/'):
             if i[:2].upper() == 'BV':
