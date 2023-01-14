@@ -1,3 +1,6 @@
+# ffmpeg合并音频和无音频的视频为.mp4文件
+# 不重新编码
+
 import os
 
 f1 = ''
@@ -21,3 +24,5 @@ with open('tmp.bat', 'w') as f:
     f.write(f'ffmpeg -i {f1} -i {f2} -c copy {f3}')
 os.system('tmp.bat')
 os.remove('tmp.bat')
+
+os.system('pause')

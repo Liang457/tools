@@ -1,3 +1,7 @@
+# 检测 SearXNG 实例是否能够正常访问
+# 输出一个表格
+# Ping检测，IPv4\IPv6均检测
+
 import urllib.request
 import json
 import os

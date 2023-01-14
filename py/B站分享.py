@@ -1,4 +1,5 @@
-# 用以获取一个比较好的分享文本
+# 获取一个比较适合拿来分享的文本
+
 import urllib.request
 import json
 import os
