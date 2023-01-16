@@ -9,12 +9,18 @@ import hashlib
 if 输入的文件夹路径[0] == '"' and 输入的文件夹路径[-1] == '"':
     输入的文件夹路径 = 输入的文件夹路径[1:-1]
 前缀 = input('文件前缀(可选):')
-os.chdir(输入的文件夹路径)
-for i in os.listdir(输入的文件夹路径):
-    with open(i, 'rb') as f:
-        hash结果 = hashlib.sha3_256(f.read()).hexdigest()
-    新文件名 = f'{前缀}{hash结果}{os.path.splitext(i)[1]}'
-    os.rename(i, 新文件名)
+
+try:
+    os.chdir(输入的文件夹路径)
+except NotADirectoryError:
+    print('请输入文件夹！')
+    exit(-1)
+else:
+    for i in os.listdir(输入的文件夹路径):
+        with open(i, 'rb') as f:
+            hash结果 = hashlib.sha3_256(f.read()).hexdigest()
+        新文件名 = f'{前缀}{hash结果}{os.path.splitext(i)[1]}'
+        os.rename(i, 新文件名)
 
 print('文件Hash化成功')
 os.system('pause')
