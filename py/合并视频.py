@@ -13,7 +13,7 @@ while True:
         break
 
 while True:
-    f2 = input('输入第一个文件')
+    f2 = input('输入第二个文件')
     if f2:
         break
 
