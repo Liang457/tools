@@ -1,39 +1,48 @@
 import random
-from contextlib import nullcontext
 
 
-def get_text_at_line(file_name, line_number):
-    try:
-        with open(file_name, "r", encoding="utf-8") as file:
-            lines = file.readlines()
-            return lines[line_number - 1].strip()  # 行号从1开始，列表索引从0开始
-    except FileNotFoundError:
-        print(f"文件 {file_name} 不存在.")
-        return None
-    except IndexError:
-        print(f"文件 {file_name} 中没有找到第 {line_number} 行.")
-        return None
+def filter_lists(A: list, B: list):
+    B_set = set(B)
+    outlist = [i for i in A if i not in B_set]
+    return outlist
 
 
-def generate_random_numbers(max: int):
-    random.seed()  # 只需要在真正需要随机的时候调用 seed() 就可以了，不需要每次函数调用都调用
-    in_list = list(range(max))  # 使用 list 和 range 生成数字列表
-    random.shuffle(in_list)  # 使用 random 的 shuffle 方法打乱列表顺序
-    return in_list
+def read_file_to_list():
+    # 将抽取列表转换为一个列表
+    with open("抽取列表.txt", encoding="utf-8") as file:
+        list_from_file = [line.strip() for line in file]
+    return list_from_file
 
 
-def get_random_result(num: int, max: int):
-    try:
-        with nullcontext(FileNotFoundError):  # 如果文件不存在，直接抛出异常，由上层处理
-            out_list = generate_random_numbers(max)
-        out_list = [
-            get_text_at_line("抽取列表.txt", i) for i in out_list
-        ]  # 使用列表推导式读取每一行的内容
-        return out_list[:num]  # 返回指定索引位置的结果
-    except IndexError as e:
-        print(f"获取随机结果时出错：{e}")
-        return None
+def get_random_result(num: int):
+    # 不去掉上次抽取的随机
+    random.seed()
+    # 读取文件
+    name_list = read_file_to_list()
+    # 打乱
+    random.shuffle(name_list)
+    # 输出
+    return name_list[:num]
+
+
+def get_random_result_rmlast(num: int, lastlist: list):
+    # 去掉上次抽取的随机
+    random.seed()
+    # 读取文件
+    name_list = read_file_to_list()
+    # 去掉上一次
+    name_list = filter_lists(name_list, lastlist)
+    if len(name_list) != 0:
+        # 打乱
+        random.shuffle(name_list)
+        if len(name_list) >= num:
+            # 输出
+            return name_list[:num]
+        else:
+            return name_list
+    else:
+        return ["已经抽完人了，请点击“排除已经抽过的人”重置"]
 
 
 if __name__ == "__main__":
-    print(get_random_result(2, 54))
+    print(get_random_result(2))
